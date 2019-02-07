@@ -49,7 +49,7 @@ def vectorization(train,test):			#It will vectorize the train set and it will tr
 
 #		*********Classifiers*******
 
-x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.75)
+x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.75, random_state = 42)
 [x_train,x_val] = vectorization(x_train,x_val)
 
 print('Classifier: LogisticRegression')
