@@ -37,7 +37,7 @@ for file in os.listdir(train_neg_path):
 		reviews_train.append(f.read())
 
 target = [1 if i<12500 else 0 for i in range(25000)]
-reviews = reviews_train
+reviews = reviews_train 
 shuffle(reviews)
 
 
