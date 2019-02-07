@@ -45,16 +45,6 @@ def vectorization(train,test, words):			#It will vectorize the train set and it 
 	test = cv.transform(test)
 	return train, test
 
-# stop_words = stopwords.words(words)
-# def filter_stopwords(corpus):
-#     filter_stopwords = []
-#     for review in corpus:
-#         filter_stopwords.append(
-#             ' '.join([word for word in review.split() 
-#                       if word not in stop_words])
-#         )
-#     return filter_stopwords
-
 
 #		*********Validation Pipeline******
 # def validation(classifier,x,y,k_fold):
