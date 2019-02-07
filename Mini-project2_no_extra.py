@@ -19,19 +19,26 @@ warnings.filterwarnings("ignore",category = FutureWarning)
 
 filter_words = []
 target = [] #len = 25000
-reviews = [] #Shuffled training data, len = 25000
-
+reviews_train = []  #first 12500 are positive reviews, the rest are negative
+reviews_test = []
+train_pos_path = 'train//pos'
+train_neg_path = 'train//neg'
+test_path = 'test'
 
 
 #		******Read data******
 
-with open("train_data.json") as fp:
-    train_data = json.load(fp)
-i = 0
-while i < 25000:
-	target.append(train_data[i][0])
-	reviews.append(train_data[i][1])
-	i += 1
+for file in os.listdir(train_pos_path):
+	with open(os.path.join(train_pos_path,file),"r",encoding="utf8") as f:
+		reviews_train.append(f.read())
+
+for file in os.listdir(train_neg_path):
+	with open(os.path.join(train_neg_path,file),"r",encoding="utf8") as f:
+		reviews_train.append(f.read())
+
+target = [1 if i<12500 else 0 for i in range(25000)]
+reviews = reviews_train
+shuffle(reviews)
 
 
 #		********Preprocessing********
