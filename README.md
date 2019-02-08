@@ -13,7 +13,7 @@
 * Features: Unigrams, Bigrams, Tf-idf weighting
 * Validation Pipeline: Cross-validation
 * Parameters_grid: vect_binary, vect_min_df, tfidf_use, classifier_penalty, classifier_C
-* Best model: Compile, no stemming/lemmatization, uni and bigrams with tf-idf weighting, binary=True, min_df=30, C=0.15, penalty=l2
+* Best model: Compile, no stemming/lemmatization, no stop-words, uni and bigrams with tf-idf weighting, binary=True, min_df=30, C=0.15, penalty=l2
 * Score on kaggle: 0.88533
 
 **testing_best_Logistic.py**
