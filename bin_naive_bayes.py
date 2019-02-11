@@ -113,8 +113,8 @@ TP = 0
 FP = 0
 TN = 0
 FN = 0
-for i in target_valid:
-  if i == 1:
+for i in range(len(target_valid)):
+  if target_valid[i] == 1:
     if predict[i] == 1:
       TP = TP + 1
     else:
