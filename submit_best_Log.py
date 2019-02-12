@@ -58,11 +58,18 @@ def compile(reviews):
 	return reviews
 
 def vectorization(train,test):	#It will vectorize the train set and it will transform both train and test set
-	cv = TfidfVectorizer(binary = False, min_df = 120, ngram_range=(1,2))
+	cv = TfidfVectorizer(binary = True, ngram_range=(1,2))
 	cv.fit(train)
 	train = cv.transform(train)
 	test = cv.transform(test)
 	return train, test
+
+def normalization(train,test):
+	norm = Normalizer().fit(train)
+	train = norm.transform(train)
+	test = norm.transform(test)
+	return train, test
+
 
 #		********Heald-out validation********
 
@@ -72,11 +79,12 @@ x_test = compile(reviews_test)
 
 #       *********Applying preprocessing*******
 [x_train,x_test] = vectorization(x_train, x_test)
+[x_train,x_test] = normalization(x_train,x_test)
 
 
 #		*********Classifiers*******
 print('Classifier: LogisticRegression')
-lr = LogisticRegression(C = 0.15, penalty = 'l2')
+lr = LogisticRegression(C = 100, penalty = 'l2')
 lr.fit(x_train,y_train)
 y_test = lr.predict(x_test)
 print(y_test)
