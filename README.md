@@ -7,7 +7,7 @@
 * Validation Pipeline: Held-out validation
 * Classifiers: Logistic Regression and Linear SVM
 
-**LogisticRegression.py**
+**LogReg_tfidf_pipeline.py**
 * *Code to find the best set of hyperparameters for LogisticRegression using GridSearchCV*
 * Preprocessing: Removes punctuation, replaces special characters with spaces and get the steem of the words
 * Features: Unigrams, Bigrams, Tf-idf weighting
