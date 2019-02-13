@@ -76,31 +76,15 @@ def get_stemmed_text(corpus,name): #PorterStemmer - SnowballStemmer("english")
 	return [' '.join([stemmer.stem(word) for word in review.split()]) for review in corpus]
 
 
-#		*******Length feature******
-def get_text_length(x):
-    return np.array([math.sqrt(len(t)) for t in x]).reshape(-1, 1)
-
-# length_feature = FunctionTransformer(length)
-# print(length_feature.fit_transform(compile(reviews)[0:10]).shape)
-#print(compile(reviews)[0])
-#print(length(compile(reviews)[0:10]))
-
 def normalization(train,test):
 	norm = Normalizer().fit(train)
 	train = norm.transform(train)
 	test = norm.transform(test)
 	return train, test
 
-
-
-#		********Heald-out validation********
-
-x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.80, random_state = 42)
-
-
-#       *********Applying preprocessing*******
-# x_train = get_stemmed_text(x_train,'Snow')
-# x_val = get_stemmed_text(x_val,'Snow')
+#		*******Length feature******
+def get_text_length(x):
+    return np.array([math.sqrt(len(t)) for t in x]).reshape(-1, 1)
 
 
 #       *********Features Pipeline*******
@@ -113,14 +97,35 @@ pipeline = Pipeline([
     		('count', FunctionTransformer(get_text_length, validate = False)),
     ]))])),
         # ],
-    # transformer_weights= {'words_feature': 1, 'ngrams_feature': 1,   }
+    #transformer_weights= {'words_feature': 1, 'ngrams_feature': 1,   }
     #('normalization', Normalizer(copy=False)),
     ('classifier', LogisticRegression(C=100, penalty = 'l2'))])
 
 
-#		*********Classifiers*******
+#       *********Applying preprocessing*******
 
-print('Classifier: LogisticRegression')
-pipeline.fit(x_train, y_train)
-print("Accuracy on train set: %s " %(accuracy_score(y_train,pipeline.predict(x_train))))
-print("Accuracy on val set: %s " %(accuracy_score(y_val,pipeline.predict(x_val))))
+reviews = compile(reviews)		#always apply this to get rid of punctuation and special characters
+
+#reviews = get_stemmed_text(reviews,'Porter')
+#reviews = get_stemmed_text(reviews,'Snow')
+#reviews = get_lemmatized_text(reviews)
+
+
+#		*********Grid Search*******
+#call the labels in the pipeline above + __ + hyper-parameter for that label and in () indicate the different parameters to experiment
+#print(pipeline.get_params().keys())
+parameters_grid = {	#'classifier__C': (50,100,150),
+					'features_union__words_feature__words_vect__max_features': (150,350,500),
+					'features_union__transformer_weights': [dict(words_vect=0.5, ngrams_vect=10),
+															dict(words_vect=2, ngrams_vect=5),
+															dict(words_vect=5, ngrams_vect=2),
+															dict(words_vect=10, ngrams_vect=0.5)]
+					}
+
+#		*********Validation Pipeline*******
+
+grid_search = GridSearchCV(pipeline, parameters_grid, cv=4, n_jobs=-2, scoring='accuracy')
+grid_search.fit(reviews,target)
+cvres = grid_search.cv_results_
+for accuracy, params in zip(cvres['mean_test_score'],cvres['params']):
+	print('Mean accuracy: ', accuracy,'  using: ',params)
