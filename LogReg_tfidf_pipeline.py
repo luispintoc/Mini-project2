@@ -62,6 +62,12 @@ def get_lemmatized_text(corpus):
     lemmatizer = WordNetLemmatizer()
     return [' '.join([lemmatizer.lemmatize(word) for word in review.split()]) for review in corpus] 
 
+def normalization(train,test):
+	norm = Normalizer().fit(train)
+	train = norm.transform(train)
+	test = norm.transform(test)
+	return train, test
+
 
 #		*******Feature pipelines******
 
@@ -75,8 +81,8 @@ reviews = compile(reviews)
 #x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.75, random_state = 42)
 # x_train = get_stemmed_text(x_train,'Porter')
 # x_val = get_stemmed_text(x_val,'Porter')
-x_train = get_stemmed_text(x_train,'Snow')
-x_val = get_stemmed_text(x_val,'Snow')
+#x_train = get_stemmed_text(x_train,'Snow')
+#x_val = get_stemmed_text(x_val,'Snow')
 # x_train = get_lemmatized_text(x_train)
 # x_val = get_lemmatized_text(x_val)
 #[x_train,x_val] = tf_idf_vectorization(x_train, x_val)
