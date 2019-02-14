@@ -6,11 +6,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split, GridSearchCV
 from nltk.corpus import stopwords
-from sklearn.svm import LinearSVC
+from sklearn.svm import LinearSVC, SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.pipeline import Pipeline, FeatureUnion
-from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import Normalizer, StandardScaler
 from sklearn.feature_extraction.text import TfidfTransformer
 import warnings
 
@@ -62,22 +62,23 @@ def get_lemmatized_text(corpus):
     lemmatizer = WordNetLemmatizer()
     return [' '.join([lemmatizer.lemmatize(word) for word in review.split()]) for review in corpus] 
 
-def normalization(train,test):
+def normalization(train):
 	norm = Normalizer().fit(train)
 	train = norm.transform(train)
-	test = norm.transform(test)
-	return train, test
+	return train
 
 
 #		*******Feature pipelines******
 
-vect_pipeline = Pipeline([('vect', CountVectorizer(ngram_range=(1,2))),
+vect_pipeline = Pipeline([('vect', CountVectorizer(ngram_range = (1,2),binary=False)),
 							('tfidf', TfidfTransformer()),
-							('classifier', LogisticRegression())])
+							#('normalization', (copy = False)), #Normalizer
+							('classifier', SVC(max_iter=2000))])
 
 #       *********Applying preprocessing*******
 
 reviews = compile(reviews)
+#reviews = normalization(reviews)
 #x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.75, random_state = 42)
 # x_train = get_stemmed_text(x_train,'Porter')
 # x_val = get_stemmed_text(x_val,'Porter')
@@ -89,13 +90,11 @@ reviews = compile(reviews)
 
 
 #		*********Grid Search*******
-parameters_grid = {'vect__binary': (True,False),
-					'vect__min_df':(30,50,100,120),
-					'tfidf__use_idf': (True, False),
-					'classifier__penalty':('l1','l2'),
-					'classifier__C':(0.05,0.15)}
-# parameters_grid = {'vect__binary': (True,False),
-# 					}
+parameters_grid = {#'vect__binary': (True,False),
+					#'classifier__decision_function_shape':('ovo','ovr'),
+					'classifier__C':(1,100)
+					}
+
 
 #		*********Validation Pipeline*******
 

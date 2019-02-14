@@ -75,7 +75,6 @@ def get_stemmed_text(corpus,name): #PorterStemmer - SnowballStemmer("english")
 		stemmer = SnowballStemmer("english")
 	return [' '.join([stemmer.stem(word) for word in review.split()]) for review in corpus]
 
-
 def normalization(train,test):
 	norm = Normalizer().fit(train)
 	train = norm.transform(train)
@@ -98,29 +97,30 @@ pipeline = Pipeline([
     ]))])),
         # ],
     #transformer_weights= {'words_feature': 1, 'ngrams_feature': 1,   }
-    #('normalization', Normalizer(copy=False)),
-    ('classifier', LogisticRegression(C=100, penalty = 'l2'))])
+    ('normalization', Normalizer(copy=False)),
+    ('classifier', LinearSVC(penalty = 'l2'))])
 
 
 #       *********Applying preprocessing*******
 
-reviews = compile(reviews)		#always apply this to get rid of punctuation and special characters
-
-#reviews = get_stemmed_text(reviews,'Porter')
-#reviews = get_stemmed_text(reviews,'Snow')
-#reviews = get_lemmatized_text(reviews)
+reviews = compile(reviews)
+#reviews = normalization(reviews)
+#x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.75, random_state = 42)
+# x_train = get_stemmed_text(x_train,'Porter')
+# x_val = get_stemmed_text(x_val,'Porter')
+#x_train = get_stemmed_text(x_train,'Snow')
+#x_val = get_stemmed_text(x_val,'Snow')
+# x_train = get_lemmatized_text(x_train)
+# x_val = get_lemmatized_text(x_val)
+#[x_train,x_val] = tf_idf_vectorization(x_train, x_val)
 
 
 #		*********Grid Search*******
-#call the labels in the pipeline above + __ + hyper-parameter for that label and in () indicate the different parameters to experiment
-#print(pipeline.get_params().keys())
-parameters_grid = {	#'classifier__C': (50,100,150),
-					'features_union__words_feature__words_vect__max_features': (150,350,500),
-					'features_union__transformer_weights': [dict(words_vect=0.5, ngrams_vect=10),
-															dict(words_vect=2, ngrams_vect=5),
-															dict(words_vect=5, ngrams_vect=2),
-															dict(words_vect=10, ngrams_vect=0.5)]
+parameters_grid = {#'vect__binary': (True,False),
+					'classifier__C':(100,200)
+					#'classifier__max_iter':(2000,4000)}
 					}
+
 
 #		*********Validation Pipeline*******
 
