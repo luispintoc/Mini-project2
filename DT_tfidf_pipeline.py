@@ -26,7 +26,7 @@ reviews = [] #Shuffled training data, len = 25000
 
 #		********Read data*********
 
-with open("train_data2.json") as fp:
+with open("train_data.json") as fp:
     train_data = json.load(fp)
 i = 0
 while i < 25000:
@@ -67,12 +67,12 @@ def get_lemmatized_text(corpus):
 
 vect_pipeline = Pipeline([('vect', CountVectorizer(ngram_range=(1,2))),
 							('tfidf', TfidfTransformer()),
-							('classifier', LogisticRegression())])
+							('classifier', DecisionTreeClassifier())])
 
 #       *********Applying preprocessing*******
 
 reviews = compile(reviews)
-#x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.75, random_state = 42)
+x_train,x_val,y_train,y_val = train_test_split(compile(reviews), target, train_size = 0.75, random_state = 42)
 # x_train = get_stemmed_text(x_train,'Porter')
 # x_val = get_stemmed_text(x_val,'Porter')
 x_train = get_stemmed_text(x_train,'Snow')
@@ -86,8 +86,8 @@ x_val = get_stemmed_text(x_val,'Snow')
 parameters_grid = {'vect__binary': (True,False),
 					'vect__min_df':(30,50,100,120),
 					'tfidf__use_idf': (True, False),
-					'classifier__penalty':('l1','l2'),
-					'classifier__C':(0.05,0.15)}
+					'classifier__min_samples_split':(2,'4,6,8,10),
+					'classifier__max_depth':(5,10,15,20)}
 # parameters_grid = {'vect__binary': (True,False),
 # 					}
 
