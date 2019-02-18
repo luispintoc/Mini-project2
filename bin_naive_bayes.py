@@ -1,10 +1,10 @@
 import os, re, json
 from random import shuffle
 import numpy as np
+from nltk.corpus import movie_reviews
+import nltk as nl
 import nltk.sentiment as nltk
 import math as math
-#import python3_sklearn
-#from sklearn.feature_extraction.text import CountVectorizer
 
 target = [] #len = 25000
 reviews = [] #Shuffled training data, len = 25000
@@ -34,8 +34,9 @@ def preprocessing(reviews):
 #splits into train and validation sets
 reviews_train = reviews[0:2500];
 target_train = target[0:2500];
-reviews_valid = reviews[0:2500];
+reviews_valid = reviews[2500:3000];
 target_valid = target[2500:3000];
+
 
 #reads positive words from Bing Liu's opinion lexicon
 text_file = open("positive-words.txt")
@@ -50,6 +51,11 @@ text_file.close()
 #Combines positive and negative words into one list
 lexicon = pos_words + neg_words
 
+#Adds movie review list from nltk to list
+#nl.download('movie_reviews')
+words_for_movies = list(set(list(movie_reviews.words())))
+lexicon = list(set().union(lexicon, words_for_movies))
+#print(lexicon)
 #Splits training reviews into list of positive and negative reviews
 pos_reviews = []
 neg_reviews = []
