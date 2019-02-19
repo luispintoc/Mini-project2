@@ -8,7 +8,15 @@ import math as math
 
 target = [] #len = 25000
 reviews = [] #Shuffled training data, len = 25000
+reviews_test = []
+reviews_target = []
 
+test_path = 'data/test'
+for file in os.listdir(test_path):
+       with open(os.path.join(test_path,file),"r") as f:
+               reviews_test.append(f.read())
+#print(reviews_test[1])
+#print(len(reviews_test))
 with open("train_data.json") as fp:
     train_data = json.load(fp)
 
@@ -32,11 +40,12 @@ def preprocessing(reviews):
         return reviews  
 
 #splits into train and validation sets
-reviews_train = reviews[0:2500];
-target_train = target[0:2500];
-reviews_valid = reviews[2500:3000];
-target_valid = target[2500:3000];
-
+reviews_train = reviews;
+target_train = target;
+#reviews_valid = reviews[2500:3000];
+#target_valid = target[2500:3000];
+#print(reviews_train[1])
+#print(target_train[1])
 
 #reads positive words from Bing Liu's opinion lexicon
 text_file = open("positive-words.txt")
@@ -52,10 +61,11 @@ text_file.close()
 lexicon = pos_words + neg_words
 
 #Adds movie review list from nltk to list
-#nl.download('movie_reviews')
+nl.download('movie_reviews')
 words_for_movies = list(set(list(movie_reviews.words())))
+words_for_movies = [str(r) for r in words_for_movies]
 lexicon = list(set().union(lexicon, words_for_movies))
-#print(lexicon)
+
 #Splits training reviews into list of positive and negative reviews
 pos_reviews = []
 neg_reviews = []
@@ -101,9 +111,9 @@ p_00= [x / float(len(neg_reviews)) for x in p_00]
 
 
 #Makes decision boundary and classifies validation examples
-predict = [0] * len(reviews_valid)
-for i in range(len(reviews_valid)):
-  unigrams = nltk.util.extract_unigram_feats(reviews_valid[i].split(),lexicon)
+predict = [0] * len(reviews_test)
+for i in range(len(reviews_test)):
+  unigrams = nltk.util.extract_unigram_feats(reviews_test[i].split(),lexicon)
   boundary =  math.log10(Py1/Py0)
   for j in range(len(lexicon)):
     x_j = unigrams['contains('+lexicon[j]+')'];
@@ -114,36 +124,39 @@ for i in range(len(reviews_valid)):
   if boundary > 0:
     predict[i] = 1
 
+for i in range(len(predict)):
+  print i, ',', predict[i]
+
 #Compares prediction with validation set
-TP = 0
-FP = 0
-TN = 0
-FN = 0
-for i in range(len(target_valid)):
-  if target_valid[i] == 1:
-    if predict[i] == 1:
-      TP = TP + 1
-    else:
-      FN = FN + 1
-  else:
-    if predict[i] == 1:
-      FP = FP + 1
-    else:
-      TN = TN + 1
-print("True positives: ",TP)
-print("True negatives: ",TN)
-print("False positives: ",FP)
-print("False negatives: ",FN)
+#TP = 0
+#FP = 0
+#TN = 0
+#FN = 0
+#for i in range(len(reviews_test)):
+#  if target_valid[i] == 1:
+#    if predict[i] == 1:
+#      TP = TP + 1
+#    else:
+#      FN = FN + 1
+#  else:
+#    if predict[i] == 1:
+#      FP = FP + 1
+#    else:
+#      TN = TN + 1
+#print("True positives: ",TP)
+#print("True negatives: ",TN)
+#print("False positives: ",FP)
+#print("False negatives: ",FN)
 
-Error_rate = (FP + FN)/float(len(reviews_valid))
-Accuracy = (TP + TN)/float(len(reviews_valid))
-Precision = TP/float((TP + FP))
-Recall = TP/float((TP + FN))
-Specificity = TN/float((FP + TN))
+#Error_rate = (FP + FN)/float(len(reviews_valid))
+#Accuracy = (TP + TN)/float(len(reviews_valid))
+#Precision = TP/float((TP + FP))
+#Recall = TP/float((TP + FN))
+#Specificity = TN/float((FP + TN))
 
-print("Error Rate: ", Error_rate)
-print("Accuracy: ", Accuracy)
-print("Precision: ",Precision)
-print("Recall: ",Recall)
-print("Specificity: ",Specificity)
+#print("Error Rate: ", Error_rate)
+#print("Accuracy: ", Accuracy)
+#print("Precision: ",Precision)
+#print("Recall: ",Recall)
+#print("Specificity: ",Specificity)
 
