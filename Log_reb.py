@@ -12,9 +12,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.preprocessing import Normalizer, FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
-from pattern.en import sentiment
+# from pattern.en import sentiment
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import f_classif, chi2
+from sklearn.ensemble import VotingClassifier
 import warnings
 import nltk
 warnings.filterwarnings("ignore",category = FutureWarning)
@@ -79,28 +80,32 @@ def get_lemmatized_text(corpus):
 
 #       ********Features********
 
-def get_sentiment(x):
-    return np.array([sentiment(t)[0] for t in x]).reshape(-1, 1)
+# def get_sentiment(x):
+#     return np.array([sentiment(t)[0] for t in x]).reshape(-1, 1)
 
-def get_sentiment2(x):
-    return np.array([sentiment(t)[1] for t in x]).reshape(-1, 1)
+# def get_sentiment2(x):
+#     return np.array([sentiment(t)[1] for t in x]).reshape(-1, 1)
 
 #       *******Length feature******
 def get_text_length(x):
     return np.array([len(t) for t in x]).reshape(-1, 1)
 
-def other(x):
-    a = np.array([sentiment(t)[0] for t in x]).reshape(-1, 1)
-    b = np.array([math.sqrt(len(t)) for t in x]).reshape(-1, 1)
-    return [a*b for a,b in zip(a,b)]
+# def other(x):
+#     a = np.array([sentiment(t)[0] for t in x]).reshape(-1, 1)
+#     b = np.array([math.sqrt(len(t)) for t in x]).reshape(-1, 1)
+#     return [a*b for a,b in zip(a,b)]
 
-def other2(x):
-    a = np.array([sentiment(t)[1] for t in x]).reshape(-1, 1)
-    b = np.array([math.sqrt(len(t)) for t in x]).reshape(-1, 1)
-    return [a*b for a,b in zip(a,b)]
+# def other2(x):
+#     a = np.array([sentiment(t)[1] for t in x]).reshape(-1, 1)
+#     b = np.array([math.sqrt(len(t)) for t in x]).reshape(-1, 1)
+#     return [a*b for a,b in zip(a,b)]
 
 
 #       *******Feature pipeline******
+clf1 = LogisticRegression()
+clf2 = LinearSVC()
+eclf = VotingClassifier(estimators=[('lr',clf1),('svc',clf2)],voting='soft')
+
 
 pipeline = Pipeline([
     ('features_union', FeatureUnion([
@@ -109,22 +114,22 @@ pipeline = Pipeline([
                 ('words_feature', Pipeline([('words_vect', CountVectorizer(vocabulary = vocab, binary = True, min_df = 2))
             ])),
                 ('length',Pipeline([('count', FunctionTransformer(get_text_length, validate = False))
-            ])),
-                ('sent',Pipeline([('sentiment', FunctionTransformer(get_sentiment, validate = False))
-            ])),
-                ('sent2',Pipeline([('sentiment2', FunctionTransformer(get_sentiment2, validate = False))
-            ])),
-                ('other',Pipeline([('other', FunctionTransformer(other, validate = False))
-            ])),
-                ('other2',Pipeline([('other2', FunctionTransformer(other2, validate = False))
+            # ])),
+            #     ('sent',Pipeline([('sentiment', FunctionTransformer(get_sentiment, validate = False))
+            # ])),
+            #     ('sent2',Pipeline([('sentiment2', FunctionTransformer(get_sentiment2, validate = False))
+            # ])),
+            #     ('other',Pipeline([('other', FunctionTransformer(other, validate = False))
+            # ])),
+            #     ('other2',Pipeline([('other2', FunctionTransformer(other2, validate = False))
     ]))])),
         # ],
     #transformer_weights= {'words_feature': 1, 'ngrams_feature': 1,   }
     ('normalization', Normalizer(copy=False)),
     ('reduce_dim', None),
     #('classifier', LinearSVC(max_iter = 5000))])
-    #('classifier', SVC(gamma='scale'))])
-    ('classifier', LogisticRegression(solver= 'lbfgs', C= 100, penalty = 'l2', max_iter = 6000))])
+    ('classifier', eclf)])
+    #('classifier', LogisticRegression(solver= 'lbfgs', C= 100, penalty = 'l2', max_iter = 6000))])
     # ('classifier', RandomForestClassifier(n_estimators = 600))])
     #('classifier', LinearSVC(penalty='l2',C=100, max_iter = 5000))])
 
@@ -141,7 +146,8 @@ reviews = compile(reviews)      #always apply this to get rid of punctuation and
 # call the labels in the pipeline above + __ + hyper-parameter for that label and in () indicate the different parameters to experiment
 #print(pipeline.get_params().keys())
 parameters_grid = { #'classifier__solver': ('lbfgs','newton-cg'),
-                    #'classifier__C': (10,100,200),
+                    'classifier__lr__C': (10,100,200),
+                    'classifier__svc__C': (10,100,200),
                     
                     # 'reduce_dim__score_func':(f_classif(),chi2()),
                     # 'features_union__words_feature__words_vect__binary': (True,False),
@@ -153,11 +159,11 @@ parameters_grid = { #'classifier__solver': ('lbfgs','newton-cg'),
                     #                                       dict(words_vect=10, ngrams_vect=0.5)]
                     'reduce_dim':[SelectKBest(f_classif)],
                     # 'reduce_dim__score_func':(f_classif(),chi2()),
-                    'reduce_dim__k':(20000,15000,17500,25000)}
+                    'reduce_dim__k':(10000,11000,20000,15000,17500)}
 
         # *********Validation Pipeline*******
 
-grid_search = GridSearchCV(pipeline, parameters_grid, cv=3, n_jobs=1, scoring='accuracy')
+grid_search = GridSearchCV(pipeline, parameters_grid, cv=3, n_jobs=-1, scoring='accuracy')
 grid_search.fit(reviews,target)
 cvres = grid_search.cv_results_
 for accuracy, params in zip(cvres['mean_test_score'],cvres['params']):
