@@ -38,12 +38,26 @@ while i < 25000:
     reviews.append(train_data[i][1])
     i += 1
 
-with open('positive-words.txt') as f:
-    positive_words = f.read().splitlines()
-with open('negative-words.txt') as f:
-    negative_words = f.read().splitlines()
-with open('stopwords.txt') as f:
-    stopwords = f.read().splitlines()
+
+
+f = open('positive-words.txt','rb')
+positive_words = f.read().split()
+
+f = open('negative-words.txt','rb')
+negative_words = f.read().split()
+#print(negative_words)
+#text_file = open("positive-words.txt",'r')
+#positive_words = text_file.read().split()
+#text_file.close()
+
+#reads negative words
+#text_file = open("negative-words.txt",'r')
+#negative_words = text_file.read().split()
+#text_file.close()
+#with open('negative-words.txt') as f:
+#    negative_words = f.read().splitlines()
+#with open('stopwords.txt') as f:
+#    stopwords = f.read().splitlines()
 
 bing_liu_list = list(zip(positive_words,negative_words))
 words_for_movies = list(movie_reviews.words())
