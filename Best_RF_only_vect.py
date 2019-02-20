@@ -76,7 +76,7 @@ reviews = compile(reviews)		#always apply this to get rid of punctuation and spe
 
 #print(pipeline.get_params().keys())
 parameters_grid = {	'classifier__n_estimators': (10,100,200,500),
-                    'classifier__min_samples_split':(2,3,4)
+                    'classifier__min_samples_split':(2,3,4),
                     'classifier__max_features': (0.7,0.4),
                     'reduce_dim':[SelectKBest(f_classif)],
                     'reduce_dim__k':(60000,65000,75000,80000,100000,110000)}
