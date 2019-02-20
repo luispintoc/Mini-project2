@@ -1,0 +1,9 @@
+Mean accuracy:  0.78272   using:  {'classifier__C': 10, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 20000}
+Mean accuracy:  0.78232   using:  {'classifier__C': 10, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 15000}
+Mean accuracy:  0.78156   using:  {'classifier__C': 10, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 10000}
+Mean accuracy:  0.83632   using:  {'classifier__C': 100, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 20000}
+Mean accuracy:  0.83572   using:  {'classifier__C': 100, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 15000}
+Mean accuracy:  0.83476   using:  {'classifier__C': 100, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 10000}
+Mean accuracy:  0.84984   using:  {'classifier__C': 200, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 20000}
+Mean accuracy:  0.84832   using:  {'classifier__C': 200, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 15000}
+Mean accuracy:  0.84672   using:  {'classifier__C': 200, 'reduce_dim': SelectKBest(k=20000, score_func=<function f_classif at 0x7f36f38ee400>), 'reduce_dim__k': 10000}
