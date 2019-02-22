@@ -28,3 +28,24 @@
 **submit_best_Log.py**
 * *Reads train and test data. Uses the best model of LogRegression and outputs a csv file containing the id and category numbers*
 * Best model: Compile and normalization, no stemming/lemmatization, no stop-words, uni and bigrams with tf-idf weighting, binary=True, C=100, penalty=l2
+
+**bin_naive_bayes.py**
+*Implements binary naive bayes using Bing Liu's opinion lexicon (both positive and negative words) and nltk.corpus list of words from movie reviews as features
+*Outputs accuracy, error rate, precision, recall, and specificity.
+
+**bin_naive_bayes_bl.py**
+*Implements binary naive bayes using Bing Liu's opinion lexicon (both positive and negative words) as features
+*Outputs accuracy, error rate, precision, recall, and specificity.
+
+**bin_naive_bayes_pos.py**
+*Implements binary naive bayes using Bing Liu's opinion lexicon (only positive words) as features
+*Outputs accuracy, error rate, precision, recall, and specificity.
+
+**bin_naive_bayes_neg.py**
+*Implements binary naive bayes using Bing Liu's opinion lexicon (only negative words) as features
+*Outputs accuracy, error rate, precision, recall, and specificity.
+
+**make_plot.py**
+*Plots accuracy of binary naive bayes for different feature sets.
+
+
