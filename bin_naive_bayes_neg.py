@@ -48,9 +48,9 @@ target_valid = target[24500:25000];
 #print(target_train[1])
 
 #reads positive words from Bing Liu's opinion lexicon
-text_file = open("positive-words.txt")
-pos_words = text_file.read().split()
-text_file.close()
+#text_file = open("positive-words.txt")
+#pos_words = text_file.read().split()
+#text_file.close()
 
 #reads negative words
 text_file = open("negative-words.txt")
@@ -58,13 +58,13 @@ neg_words = text_file.read().split()
 text_file.close()
 
 #Combines positive and negative words into one list
-lexicon = pos_words + neg_words
+lexicon = neg_words
 
 #Adds movie review list from nltk to list
-nl.download('movie_reviews')
-words_for_movies = list(set(list(movie_reviews.words())))
-words_for_movies = [str(r) for r in words_for_movies]
-lexicon = list(set().union(lexicon, words_for_movies))
+#nl.download('movie_reviews')
+#words_for_movies = list(set(list(movie_reviews.words())))
+#words_for_movies = [str(r) for r in words_for_movies]
+#lexicon = list(set().union(lexicon, words_for_movies))
 
 #Splits training reviews into list of positive and negative reviews
 pos_reviews = []
@@ -124,8 +124,8 @@ for i in range(len(reviews_valid)):
   if boundary > 0:
     predict[i] = 1
 
-#for i in range(len(predict)):
-#  print i, ',', predict[i]
+for i in range(len(predict)):
+  print i, ',', predict[i]
 
 #Compares prediction with validation set
 TP = 0

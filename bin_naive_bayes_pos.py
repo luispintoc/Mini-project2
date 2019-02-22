@@ -53,18 +53,18 @@ pos_words = text_file.read().split()
 text_file.close()
 
 #reads negative words
-text_file = open("negative-words.txt")
-neg_words = text_file.read().split()
-text_file.close()
+#text_file = open("negative-words.txt")
+#neg_words = text_file.read().split()
+#text_file.close()
 
 #Combines positive and negative words into one list
-lexicon = pos_words + neg_words
+lexicon = pos_words
 
 #Adds movie review list from nltk to list
-nl.download('movie_reviews')
-words_for_movies = list(set(list(movie_reviews.words())))
-words_for_movies = [str(r) for r in words_for_movies]
-lexicon = list(set().union(lexicon, words_for_movies))
+#nl.download('movie_reviews')
+#words_for_movies = list(set(list(movie_reviews.words())))
+#words_for_movies = [str(r) for r in words_for_movies]
+#lexicon = list(set().union(lexicon, words_for_movies))
 
 #Splits training reviews into list of positive and negative reviews
 pos_reviews = []
