@@ -124,8 +124,8 @@ for i in range(len(reviews_valid)):
   if boundary > 0:
     predict[i] = 1
 
-for i in range(len(predict)):
-  print i, ',', predict[i]
+#for i in range(len(predict)):
+#  print i, ',', predict[i]
 
 #Compares prediction with validation set
 TP = 0
