@@ -40,10 +40,10 @@ def preprocessing(reviews):
         return reviews  
 
 #splits into train and validation sets
-reviews_train = reviews[0:24500];
-target_train = target[0:24500];
-reviews_valid = reviews[24500:25000];
-target_valid = target[24500:25000];
+reviews_train = reviews[0:21250];
+target_train = target[0:21250];
+reviews_valid = reviews[21250:25000];
+target_valid = target[21250:25000];
 #print(reviews_train[1])
 #print(target_train[1])
 
