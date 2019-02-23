@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 N = 4
-Accuracy = (.768, .712, .816, .856)
-ER = (.232, .288, .184, .144)
-Precision = (.753,.78899,.83712,.85357)
-Recall = (.848,.63704,.81852,.88518)
-Specificity = (.673,.8,.813043,.821739)
+Accuracy = (.75973,.70346,.82426,.83707)
+ER = (.2402,.2965,.1757,.1629)
+Precision = (.72526,.75498,.83089,.83518)
+Recall = (.838297,.60478,.8154,.84096)
+Specificity = (.6807,.80267,.833155,.83316)
 ind = np.arange(N)
 width = .4
 
