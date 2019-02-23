@@ -1,31 +1,42 @@
 # Mini-project2
+In order to run these scripts, the positive-words and negative-words textfiles should be in the same folder. Also, the packages used are scikit-learn, nltk and pattern. Moreover, run this nltk.download('movie_reviews') to download one of the lexicon.
 
-**Mini-project2_no_extra.py:**
-* *Task: You must run experiments using at least two different classifiers from the SciKit learn package*
-* Preprocessing: Removes punctuation, replaces special characters with spaces and get the steem of the words
-* Features: Unigrams
-* Validation Pipeline: Held-out validation
-* Classifiers: Logistic Regression and Linear SVM
+**LinearSVC_gridsearch.py**
+* *Task: Get the k best features using GridSearchCV and SelectKBest(chi2)
+* Preprocessing: Removes punctuation, replaces special characters with spaces
+* Features: Uni-grams, bi-grams and tri-grams using tf-idf vectorization
+* Validation Pipeline: 4-fold cross validation
+* Classifiers: Linear SVC
 
-**LogReg_tfidf_pipeline.py**
-* *Code to find the best set of hyperparameters for LogisticRegression using GridSearchCV*
-* Preprocessing: Removes punctuation, replaces special characters with spaces and get the steem of the words
-* Features: Tf-idf (unigrams-bigrams) weighting
-* Validation Pipeline: Cross-validation
-* Parameters_grid: vect_binary, vect_min_df, tfidf_use, classifier_penalty, classifier_C
+**LogRegression_gridsearch.py**
+* *Task: Get the k best features using GridSearchCV and SelectKBest(chi2)
+* Preprocessing: Removes punctuation, replaces special characters with spaces
+* Features: Uni-grams and bi-grams using tf-idf vectorization
+* Validation Pipeline: 4-fold cross validation
+* Classifiers: Logistic Regression
 
-**LogReg_length+tfidf_pipeline.py**
-* *Variation from LogReg_tfidf_pipeline.py
-* Adds length feature to the final pipeline
+**RandomForest_gridsearch.py**
+* *Task: Get the k best features using GridSearchCV and SelectKBest(chi2)
+* Preprocessing: Removes punctuation, replaces special characters with spaces
+* Features: Uni-grams, bi-grams and tri-grams using tf-idf vectorization
+* Validation Pipeline: 4-fold cross validation
+* Classifiers: Random Forest
 
-**LogReg_vect+tfidf_pipeline.py**
-* *Variation from LogReg_tfidf_pipeline.py
-* Adds vectorization (unigrams) features to the final pipeline
+**Log+SVC_gridsearch.py**
+* *Task: Get the k best features using GridSearchCV and SelectKBest(chi2)
+* Preprocessing: Removes punctuation, replaces special characters with spaces
+* Features: Uni-grams, bi-grams and tri-grams using tf-idf vectorization and also uni-grams using count vectorization and the Bing Liu's opinion lexicon
+* Validation Pipeline: 4-fold cross validation
+* Classifiers: Ensemble of Logistic Regression and Linear SVC
 
-**testing_best_Logistic.py**
-* *Uses the best hyperparameters found using LogisticRegression.py and executes the classifier once*
+**SVC+Log+Rf_gridsearch.py**
+* *Task: Get the k best features using GridSearchCV and SelectKBest(chi2)
+* Preprocessing: Removes punctuation, replaces special characters with spaces
+* Features: Uni-grams, bi-grams and tri-grams using tf-idf vectorization and also uni-grams using count vectorization and the Bing Liu's opinion lexicon
+* Validation Pipeline: 4-fold cross validation
+* Classifiers: Ensemble of Logistic Regression, Linear SVC and Random Forest
 
-**submit_best_Log.py**
+**Standard_algorithm_printCSV.py**
 * *Reads train and test data. Uses the best model of LogRegression and outputs a csv file containing the id and category numbers*
 * Best model: Compile and normalization, no stemming/lemmatization, no stop-words, uni and bigrams with tf-idf weighting, binary=True, C=100, penalty=l2
 
