@@ -1,5 +1,5 @@
 # Mini-project2
-In order to run these scripts, the positive-words and negative-words textfiles should be in the same folder. Also, the packages used are scikit-learn, nltk and pattern. Moreover, run this nltk.download('movie_reviews') to download one of the lexicon.
+In order to run these scripts, the positive-words and negative-words textfiles should be in the same folder. Also, the packages used are scikit-learn, nltk and pattern. Moreover, to download one of the lexicons use nltk.download('movie_reviews') (only needed in the Naive Bayes Model) 
 
 **LinearSVC_gridsearch.py**
 * *Task: Gets the k best features using GridSearchCV and SelectKBest(chi2)
