@@ -63,4 +63,6 @@ In order to run these scripts, the positive-words and negative-words textfiles s
 **make_plot.py**
 *Plots accuracy of binary naive bayes for different feature sets.
 
+**submission_kaggle**
+*Empty CSV where the output of Standard_algorithm_printCSV or Ensemble_algorithm_printCSV will be written.
 
